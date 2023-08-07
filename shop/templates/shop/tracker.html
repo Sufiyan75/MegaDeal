@@ -1,0 +1,153 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}Checkout{% endblock title %}
+
+{% block css %}
+<style>
+  .rounded-pill {
+    font-size: 15px;
+  }
+  a{
+    text-decoration: none;
+  }
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container my-4">
+  <div class="col">
+    <h2>Track Your Order</h2>
+    <div class="mt-4">
+      <div class="container border my-4">
+        <h5>Enter your details to track your order</h5><br>
+        <form class="row g-3" id="trackerForm" action="#" method="post">
+          {% csrf_token %}
+          <div class="col-md-6">
+            <input type="text" class="form-control" name="orderId" id="orderId" placeholder="Order Id" required>
+          </div>
+          <div class="col-md-6">
+            <input type="email" class="form-control" name="email" id="inputEmail4" placeholder="Email" required>
+          </div>
+          <div class="col-12 my-3">
+            <button type="submit" class="btn btn-success">Track Order</button>
+          </div>
+        </form>
+      </div>
+      <!-- Order Status -->
+      <div class="col my-4">
+        <h2>Order Status</h2>
+        <div class="my-4">
+          <ol class="list-group list-group-numbered" id="items">
+            Enter your order id and email. Click Track Order to find details about your order!
+          </ol>
+        </div>
+      </div>
+      <!-- Order Details -->
+      <div class="col my-4">
+        <h2>Order Details</h2>
+        <table class="table border text-center table-hover">
+          <thead>
+            <tr class="table-secondary">
+              <th>Sr. No.</th>
+              <th>Products</th>
+              <th>Quantity</th>
+              <th>Item Price</th>
+              <th>Total Price</th>
+            </tr>
+          </thead>
+          <tbody id="citems">
+          </tbody>
+        </table>
+        <nav aria-label="breadcrumb" style="background-color: rgb(228, 226, 226);">
+          <ol class="breadcrumb" style="height: 40px; padding-top: 8px; padding-left: 10px;">
+            <li class="breadcrumb-item active" aria-current="page">
+              Your Cart Total is: <b>&#8377; <span id="totalPrice"></span></b>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script>
+  $('#trackerForm').submit(function (event) {
+    $('#items').empty();
+    var formData = {
+      'orderId': $('input[name=orderId]').val(),
+      'email': $('input[name=email]').val(),
+      'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/shop/tracker/',
+      data: formData,
+      encode: true
+    })
+      .done(function (data) {
+        $('#citems').empty();
+        console.log(data)
+        data = JSON.parse(data);
+
+        if (data['status'] == 'success') {
+          updates = data['updates'];
+          for (i = 0; i < updates.length; i++) {
+            let text = updates[i]['text'];
+            let time = updates[i]['time'];
+            mystr = `<li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">${text}</div>
+                </div>
+                <span class="badge bg-primary rounded-pill my-3">${time}</span>
+            </li>`
+            $('#items').append(mystr);
+          }
+          //Order Details:
+          var sum = 0;
+          var totalPrice = 0;
+          var sr = 1;
+          cart = JSON.parse(data['itemsJson']);
+          for (var item in cart) {
+            let qty = cart[item][0];
+            let name = cart[item][1];
+            let desc = cart[item][2];
+            let itemPrice = cart[item][3];
+            let itemPricetotal = cart[item][3] * qty;
+            sum = sum + qty;
+            totalPrice = totalPrice + (qty * itemPrice);
+            mystr = `<tr>
+                <td>${sr}</td>
+                <td>${name}</td>
+                <td>${qty}</td>
+                <td>${itemPrice}</td>
+                <td>${itemPricetotal}</td>
+              </tr>`
+            $('#citems').append(mystr);
+            sr = sr + 1;
+          }
+          document.getElementById('totalPrice').innerHTML = totalPrice;
+        }
+        else {
+          mystr = `<li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">Sorry, we are not able to fetch details. Please make sure to type correct order id and email</div>
+                </div>
+            </li>`
+          mystr2 = `<li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">No details found!</div>
+                </div>
+            </li>`
+          $('#items').append(mystr);
+          $('#citems').append(mystr2);
+        }
+
+      });
+
+    event.preventDefault();
+  });
+</script>
+{% endblock js %}

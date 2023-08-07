@@ -1,0 +1,142 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %}{{product.product_name}}{% endblock title %}
+
+{% block css %}
+<style>
+   .row-bordered {
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .row-bordered h4 {
+        margin-left: 10%;
+    }
+
+    .image-container {
+        position: relative;
+        padding-left: 0%;
+    }
+
+    .button-container{
+        padding-left: 25%;
+    }
+
+    .column-cell {
+        padding-right: 10px;
+    }
+
+    .column-divider {
+        position: relative;
+    }
+
+    .column-divider::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+
+    }
+    .responsive {
+        width: 100%;
+        height: auto;
+      }
+      .btn{
+        margin-left: 3px;
+      }
+</style>
+{% endblock css %}
+
+{% block body %}
+{% load static %}
+<div class="row-bordered">
+    <h4>{{product.category}}</h4>
+</div>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="image-container my-4">
+                    <img src="/media/{{product.image}}" class="responsive" alt="" height="450px" width="320px">
+                </div>
+                <div class="d-grid gap-2 d-md-block btn">
+                    <button class="btn btn-primary" type="button">Add to cart</button>
+                    <button class="btn btn-primary" type="button">Buy Now</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 my-2">
+            <h4>{{product.product_name}}</h4>
+            <p>Ratings</p>
+            <hr>
+            <h4>&#x20B9; {{product.price}}</h4>
+            <p>Inclusive of all taxes</p>
+            <p>No Cost EMI available.</p>
+            <hr>
+            <table class="table">
+                <tr>
+                    <img src="{% static '/img/offers2.png' %}" alt="" height="25px" width="24px">
+                    <b> Offers</b>
+                </tr>
+                <tr class="row-bordered">
+                    <td colspan="1" class="column-cell">
+                        <div class="column-divider">
+                            <b>No Cost EMI</b>
+                            <p>No Cost EMI Upto ₹1,255.38 EMI interest savings on select Credit Cards…</p>
+                        </div>
+                    </td>
+                    <td colspan="1" class="column-cell">
+                        <div class="column-divider">
+                            <b>Partner Offers</b>
+                            <p>Buy 2 and get 10% on Fastrack, TIMEX & Fashion Jewelry. O…</p>
+                        </div>
+                    </td>
+                    <td colspan="1" class="column-cell">
+                        <div class="column-divider">
+                            <b>Bank Offer</b>
+                            <p>Upto ₹1,750.00 discount on select Credit Cards, HDFC…</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table class="table">
+                <tr align="center">
+                    <td>
+                        <img src="{% static 'img/free_delivery.png' %}" alt="" height="38px" width="38px"><br>
+                        Free Delivery
+                    </td>
+                    <td>
+                        <img src="{% static 'img/pay_on_delivery.png' %}" alt="" height="38px" width="38px"><br>
+                        Pay On Delivery
+                    </td>
+                    <td>
+                        <img src="{% static 'img/top_brand.png' %}" alt="" height="38px" width="38px"><br>
+                        Top Brands
+                    </td>
+                </tr>
+                <tr>
+
+                </tr>
+            </table>
+            <table class="table">
+                <tr>
+                    <th>Specifications</th>
+                </tr>
+                <tr>
+                    <td>
+                        <ul>
+                            {% for pr in pr_desc %}
+                            <li>{{ pr }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
