@@ -1,0 +1,75 @@
+{% extends 'blog/basic.html' %}
+
+{% block title %}Blog Post{% endblock title %}
+
+{% block css %}
+<style>
+  
+</style>
+{% endblock css %}
+
+{% block body %}
+<div class="container my-2">
+    <div class="row g-5">
+        <div class="col-md-8">
+          <h3 class="pb-4 mb-4 fst-italic border-bottom">
+            From the MegaDeal Blog
+          </h3>
+    
+          <article class="blog-post">
+            <h2 class="display-5 link-body-emphasis mb-1">{{blogs.title}}</h2>
+            <p class="blog-post-meta">{{blogs.pub_date}} by <a href="#">{{blogs.publisher}}</a></p>
+            <div class="my-2 fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-width="" data-layout="" data-action="" data-size="" data-share="true"></div>
+            <hr>
+            <h4>{{blogs.head0}}</h4>
+            <p>{{blogs.chead0}}</p>
+            
+            <h4>{{blogs.head1}}</h4>
+            <p>{{blogs.chead1}}</p>
+
+            <h4>{{blogs.head2}}</h4>
+            <p>{{blogs.chead2}}</p>
+
+            <h4>Conclusion</h4>
+            <p>{{blogs.conclusion}}</p>
+          </article>
+          <hr>
+          <div class="fb-comments my-2" data-href="http://127.0.0.1:8000/blog/blogPost/{{blogs.post_id}}" data-width="" data-numposts="5"></div>
+
+          <nav aria-label="...">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="{{prev_id}}">Previous</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="{{next_id}}">Next</a>
+              </li>
+            </ul>
+          </nav>
+
+        </div>
+    
+        <div class="col-md-4">
+          <div class="position-sticky" style="top: 2rem;">
+            <div class="p-4 mb-3 bg-body-tertiary rounded">
+              <h4 class="fst-italic">About MegaDeal</h4>
+              <p class="mb-0"><b>MegaDeal</b> is an e-commerce website that provides users with the convenience of purchasing products online while offering attractive discounts and establishing sales and deals. It aims to enhance the shopping experience by providing a wide range of products at competitive prices.</p>
+            </div>
+
+            <div class="p-4">
+              <img src="/media/{{blogs.thumbnail}}" alt="No Image Found Related to Blog" height="100%" width="100%">
+            </div>
+    
+            <div class="p-4">
+              <h4 class="fst-italic">Contact Us On:</h4>
+              <ol class="list-unstyled">
+                <li><a href="#">GitHub</a></li>
+                <li><a href="#">Twitter</a></li>
+                <li><a href="#">Facebook</a></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock body %}
